@@ -1,4 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-payment-tcp,com.paymenttcp.mappers,TransmissionMapper,6,120,0,6,0,29,1,10,1,7
-payment-tcp,com.paymenttcp.service.impl,TransactionServiceImpl,0,133,0,6,0,30,0,14,0,11
-payment-tcp,com.paymenttcp.utils,Utils,3,55,0,4,1,8,1,4,1,2
