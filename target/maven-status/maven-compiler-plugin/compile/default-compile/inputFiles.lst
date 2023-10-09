@@ -1,0 +1,10 @@
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/mappers/TransmissionMapper.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/utils/Utils.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/PaymentTcpApplication.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/socket/TCPConsumer.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/service/TransactionService.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/enums/TagsEnum.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/config/SocketServer.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/service/impl/TransactionServiceImpl.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/dto/TransmissionResponseDTO.java
+/Users/gustavo.magalhaes/Downloads/payment-tcp/src/main/java/com/paymenttcp/enums/KernelProvidersEnum.java

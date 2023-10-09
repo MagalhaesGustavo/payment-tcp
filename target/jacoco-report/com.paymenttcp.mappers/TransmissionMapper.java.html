@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransmissionMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">payment-tcp</a> &gt; <a href="index.source.html" class="el_package">com.paymenttcp.mappers</a> &gt; <span class="el_source">TransmissionMapper.java</span></div><h1>TransmissionMapper.java</h1><pre class="source lang-java linenums">package com.paymenttcp.mappers;
+
+import com.paymenttcp.dto.TransmissionResponseDTO;
+import com.paymenttcp.enums.KernelProvidersEnum;
+import com.paymenttcp.enums.TagsEnum;
+import com.payneteasy.tlv.BerTlvs;
+
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+
+import static com.paymenttcp.utils.Utils.extractTagValue;
+
+public interface TransmissionMapper {
+
+    static List&lt;TransmissionResponseDTO&gt; mapToTransmissionResponseDTO(List&lt;BerTlvs&gt; listTLV) {
+<span class="fc" id="L19">        return listTLV.stream()</span>
+<span class="fc" id="L20">                .map(message -&gt;</span>
+<span class="fc" id="L21">                        TransmissionResponseDTO.builder()</span>
+<span class="fc" id="L22">                                .kernel(buildKernel(message))</span>
+<span class="fc" id="L23">                                .PAN(buildPAN(message))</span>
+<span class="fc" id="L24">                                .amount(buildAmount(message))</span>
+<span class="fc" id="L25">                                .currency(buildCurrency(message))</span>
+<span class="fc" id="L26">                                .build())</span>
+<span class="fc" id="L27">                .sorted(Comparator.comparing(TransmissionResponseDTO::getKernel))</span>
+<span class="fc" id="L28">                .toList();</span>
+    }
+
+    static String buildKernel(BerTlvs berTlvs) {
+<span class="fc" id="L32">        return KernelProvidersEnum.searchKernelById(extractTagValue(berTlvs, TagsEnum.KERNEL).replaceAll(&quot;0&quot;, &quot;&quot;)).getKernelProviderName();</span>
+    }
+
+    static String buildPAN(BerTlvs berTlvs) {
+<span class="fc" id="L36">        String tagHex = extractTagValue(berTlvs, TagsEnum.PAN);</span>
+
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (Character.isLetter(tagHex.charAt(tagHex.length() - 1))) {</span>
+<span class="fc" id="L39">            return tagHex.substring(0, tagHex.length() - 1);</span>
+        }
+<span class="fc" id="L41">        return tagHex;</span>
+    }
+
+    static String buildAmount(BerTlvs berTlvs) {
+<span class="fc" id="L45">        String tagHex = extractTagValue(berTlvs, TagsEnum.AMOUNT);</span>
+
+<span class="fc" id="L47">        String amount = tagHex.replaceAll(&quot;^0+&quot;, &quot;&quot;);</span>
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (amount.length() &gt; 2) {</span>
+<span class="fc" id="L50">            String prefix = amount.substring(0, amount.length() - 2);</span>
+<span class="fc" id="L51">            String lastTwoChars = amount.substring(amount.length() - 2);</span>
+<span class="fc" id="L52">            return prefix + &quot;.&quot; + lastTwoChars;</span>
+        } else {
+<span class="fc" id="L54">            return amount;</span>
+        }
+    }
+
+    static String buildCurrency(BerTlvs berTlvs) {
+<span class="fc" id="L59">        String tagHex = extractTagValue(berTlvs, TagsEnum.CURRENCY);</span>
+
+<span class="fc" id="L61">        Collection&lt;CurrencyUnit&gt; currencies = Monetary.getCurrencies();</span>
+
+<span class="fc" id="L63">        CurrencyUnit currency = currencies.stream()</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">                .filter(currencyUnit -&gt; currencyUnit.getNumericCode() == Integer.parseInt(tagHex))</span>
+<span class="fc" id="L65">                .findFirst()</span>
+<span class="pc" id="L66">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Currency not found for code: &quot; + tagHex));</span>
+
+<span class="fc" id="L68">        return currency.getCurrencyCode();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
